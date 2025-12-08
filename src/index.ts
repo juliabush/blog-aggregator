@@ -1,4 +1,4 @@
-import { setUser, readConfig } from "./config.js";
+import { setUser, readConfig } from "../config.js";
 
 function main() {
   setUser("Julia");
