@@ -9,9 +9,8 @@ export type Config = {
 
 export function setUser(currentUserName: string): Object {
   const cfg = Config = {
-
+    cfg.currentUserName = currentUserName
   };
-  cfg.currentUserName = currentUserName
   fs.writeFileSync(os.homedir(".gaterconfig.json"), settings[])
 }
 
