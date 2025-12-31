@@ -19,7 +19,7 @@ export function readConfig(): Config {
 }
 
 function getConfigFilePath(): string {
-  return path.join(os.homedir(), ".gaterconfig.json");
+  return path.join(os.homedir(), ".gatorconfig.json");
 }
 
 function writeConfig(cfg: Config): void {
