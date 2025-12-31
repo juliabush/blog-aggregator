@@ -14,18 +14,23 @@ export function setUser(currentUserName: string): void {
     config_object(currentUserName)
   );
 }
-export function readConfig(): void {
-  fs.readFileSync(
-    os.homedir().path.join("~/.gaterconfig.json"),
-    JSON.parse(config_object)
-  );
+export function readConfig(): Config {
+  const rawText = fs.readFileSync(getConfigFilePath(), "utf-8");
+  const rawJson = JSON.parse(rawText);
+  return validateConfig(rawJson);
 }
 
 function getConfigFilePath(): string {
   return path.join(os.homedir(), ".gaterconfig.json");
 }
 
-function writeConfig(cfg: Config): void {}
+function writeConfig(cfg: Config): void {
+  const raw = {
+    db_url: cfg.dbUrl,
+    current_user_name: cfg.currentUserName,
+  };
+  fs.writeFileSync(getConfigFilePath(), JSON.stringify(raw, null, 2), "utf-8");
+}
 
 function validateConfig(rawConfig: any): Config {
   if (typeof rawConfig !== "object" || rawConfig === null) {
