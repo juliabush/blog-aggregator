@@ -10,3 +10,16 @@ export function registerCommand(
 ): void {
   registry[cmdName] = handler;
 }
+
+function runCommand(
+  registry: CommandsRegistry,
+  cmdName: string,
+  ...args: string[]
+) {
+  const handler = registry[cmdName];
+  if (!handler) {
+    throw new Error(`Command "${cmdName}" does not exist`);
+  }
+
+  handler(cmdName, ...args);
+}
