@@ -8,11 +8,9 @@ export type Config = {
 };
 
 export function setUser(currentUserName: string): void {
-  const cfg: Config = { dbUrl: "...", currentUserName: "..." };
-  fs.writeFileSync(
-    os.homedir().path.join("~/.gaterconfig.json"),
-    config_object(currentUserName)
-  );
+  const cfg = readConfig();
+  cfg.currentUserName = currentUserName;
+  writeConfig(cfg);
 }
 export function readConfig(): Config {
   const rawText = fs.readFileSync(getConfigFilePath(), "utf-8");
