@@ -1,5 +1,5 @@
 import { setUser } from "./config";
-import { createUser, fetchUser } from "./db/queries/users";
+import { createUser, fetchUser, deleteAllUsers } from "./db/queries/users";
 
 export type CommandHandler = (
   cmdName: string,
@@ -34,4 +34,14 @@ export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
   const user = await createUser(potencialUser);
   setUser(user.name);
   console.log("New user has been registered");
+}
+
+export async function handlerReset(cmdName: string) {
+  try {
+    deleteAllUsers();
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 }
