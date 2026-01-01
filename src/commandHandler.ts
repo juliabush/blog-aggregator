@@ -13,7 +13,7 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
   const username = args[0];
   let checkUsername = await fetchUser(username);
   if (!checkUsername) {
-    throw new Error("Cannot login with nonexistant account");
+    throw new Error(`usage: ${cmdName} <name>`);
   }
   setUser(username);
   console.log("User has been set");
@@ -21,7 +21,7 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
 
 export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
   if (args.length === 0) {
-    throw new Error("You must pass a name as argument");
+    throw new Error(`usage: ${cmdName} <name>`);
   }
   const potencialUser = args[0];
 
