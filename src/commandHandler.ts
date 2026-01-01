@@ -38,7 +38,7 @@ export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
 
 export async function handlerReset(cmdName: string) {
   try {
-    deleteAllUsers();
+    await deleteAllUsers();
     process.exit(0);
   } catch (error) {
     console.log(error);
