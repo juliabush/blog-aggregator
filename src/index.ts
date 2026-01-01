@@ -4,10 +4,10 @@ import {
   handlerRegisterUser,
   handlerReset,
   handlerUsers,
+  handlerAgg,
 } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
-import { fetchFeed } from "./fetchFeed";
 
 // import { exit } from "node:process";
 
@@ -17,7 +17,7 @@ async function main() {
     register: handlerRegisterUser,
     reset: handlerReset,
     users: handlerUsers,
-    agg: fetchFeed,
+    agg: handlerAgg,
   };
 
   const sliced_cli = process.argv.slice(2);
