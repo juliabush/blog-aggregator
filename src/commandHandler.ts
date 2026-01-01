@@ -1,8 +1,8 @@
 import { setUser } from "./config";
 
-type CommandHandler = (cmdName: string, ...args: string[]) => void;
+export type CommandHandler = (cmdName: string, ...args: string[]) => void;
 
-function handlerLogin(cmdName: string, ...args: string[]) {
+export function handlerLogin(cmdName: string, ...args: string[]) {
   if (args.length === 0) {
     throw new Error("Commands array is empty");
   }
