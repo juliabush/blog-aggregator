@@ -19,7 +19,7 @@ async function main() {
     reset: handlerReset,
     users: handlerUsers,
     agg: handlerAgg,
-    addFeed: addfeed,
+    addfeed: addfeed,
   };
 
   const sliced_cli = process.argv.slice(2);
