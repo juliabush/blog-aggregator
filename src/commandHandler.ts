@@ -5,6 +5,7 @@ import {
   deleteAllUsers,
   getUsers,
 } from "./db/queries/users";
+import { fetchFeed } from "./fetchFeed";
 
 export type CommandHandler = (
   cmdName: string,
@@ -67,4 +68,9 @@ export async function handlerUsers(cmdName: string) {
     console.log(error);
     process.exit(1);
   }
+}
+
+export async function handlerAgg(cmdName: string, ...args: string[]) {
+  const feed = await fetchFeed(args[0]);
+  console.log(feed);
 }
