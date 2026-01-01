@@ -6,6 +6,7 @@ import {
   getUsers,
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
+import { createFeed } from "./db/queries/feeds";
 
 export type CommandHandler = (
   cmdName: string,
@@ -78,4 +79,11 @@ export async function handlerAgg(cmdName: string) {
   const feed = await fetchFeed("https://www.wagslane.dev/index.xml");
   // console.log(feed);
   console.log(JSON.stringify(feed, null, 2));
+}
+
+export async function addFeed(name: string, url: string) {
+  const cfg = readConfig();
+  const user_id = cfg.currentUserName;
+  const feed = await createFeed(name, url, user_id);
+  return feed;
 }
