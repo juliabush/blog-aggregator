@@ -85,5 +85,4 @@ export async function addFeed(name: string, url: string) {
   const cfg = readConfig();
   const user_id = cfg.currentUserName;
   const feed = await createFeed(name, url, user_id);
-  return feed;
 }
