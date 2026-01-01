@@ -29,7 +29,7 @@ export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
   if (checkUser) {
     throw new Error("User already exists");
   }
-  await createUser(potencialUser);
-  setUser(potencialUser);
+  const user = await createUser(potencialUser);
+  setUser(user.name);
   console.log("New user has been registered");
 }
