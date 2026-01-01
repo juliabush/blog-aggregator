@@ -25,7 +25,6 @@ export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
   }
   const potencialUser = args[0];
 
-  //   is this a valid check
   let checkUser = await fetchUser(potencialUser);
   if (checkUser) {
     throw new Error("User already exists");

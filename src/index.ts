@@ -3,10 +3,9 @@ import { handlerLogin, handlerRegisterUser } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
 
-import { exit } from "node:process";
+// import { exit } from "node:process";
 
 async function main() {
-  setUser("Julia");
   const registry: CommandsRegistry = {
     login: handlerLogin,
     register: handlerRegisterUser,
