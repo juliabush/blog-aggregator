@@ -14,25 +14,25 @@ export async function fetchFeed(feedURL: string) {
   let link: string;
   let description: string;
   let RSSItem = [];
-  if (!jsObj.channel) {
+  if (!jsObj.rss.channel) {
     throw new Error("Channel field is not present in Javascript object");
   }
   if (
-    !jsObj.channel.title ||
-    !jsObj.channel.link ||
-    !jsObj.channel.description
+    !jsObj.rss.channel.title ||
+    !jsObj.rss.channel.link ||
+    !jsObj.rss.channel.description
   ) {
     throw new Error("One of channel fiels is missing, cannot proceed");
   } else {
-    title = jsObj.channel.title;
-    link = jsObj.channel.link;
-    description = jsObj.channel.description;
+    title = jsObj.rss.channel.title;
+    link = jsObj.rss.channel.link;
+    description = jsObj.rss.channel.description;
   }
-  if (jsObj.channel.item) {
-    if (!Array.isArray(jsObj.channel.item)) {
-      jsObj.channel.item = [];
+  if (jsObj.rss.channel.item) {
+    if (!Array.isArray(jsObj.rss.channel.item)) {
+      jsObj.rss.channel.item = [jsObj.rss.channel.item];
     }
-    for (const item of jsObj.channel.item) {
+    for (const item of jsObj.rss.channel.item) {
       if (item.title && item.link && item.description && item.pubDate) {
         RSSItem.push({
           title: item.title,
