@@ -11,7 +11,7 @@ export function registerCommand(
   registry[cmdName] = handler;
 }
 
-function runCommand(
+export function runCommand(
   registry: CommandsRegistry,
   cmdName: string,
   ...args: string[]
