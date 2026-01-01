@@ -1,5 +1,5 @@
 import { readConfig, setUser } from "./config";
-import { handlerLogin } from "./commandHandler";
+import { handlerLogin, handlerRegisterUser } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
 
@@ -9,6 +9,7 @@ async function main() {
   setUser("Julia");
   const registry: CommandsRegistry = {
     login: handlerLogin,
+    register: handlerRegisterUser,
   };
   let sliced_cli = process.argv.slice(2);
   if (sliced_cli.length === 0) {
