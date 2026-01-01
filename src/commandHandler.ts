@@ -81,7 +81,7 @@ export async function handlerAgg(cmdName: string) {
   console.log(JSON.stringify(feed, null, 2));
 }
 
-export async function addFeed(cmdName: string, ...args: string[]) {
+export async function addfeed(cmdName: string, ...args: string[]) {
   try {
     const cfg = readConfig();
     const user_id = cfg.currentUserName;
