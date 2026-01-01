@@ -82,13 +82,16 @@ export async function handlerAgg(cmdName: string) {
 }
 
 export async function addfeed(cmdName: string, ...args: string[]) {
+  if (args.length < 2) {
+    process.exit(1);
+  }
   try {
     const cfg = readConfig();
-    const user_id = cfg.currentUserName;
-    const feed = await createFeed(args[0], args[1], user_id);
+    const user_id = await fetchUser(cfg.currentUserName);
+    const feed = await createFeed(args[0], args[1], user_id.id);
     process.exit(0);
   } catch (error) {
-    console.log(`No enough arguments for addFeed: potencial error ${error}`);
+    console.log(`${error}`);
     process.exit(1);
   }
 }

@@ -1,6 +1,6 @@
 import { db } from "..";
 import { feeds } from "../schema";
-import type { user } from "../queries/users";
+import type { User } from "../queries/users";
 
 export async function createFeed(name: string, url: string, user_id: string) {
   const [result] = await db
