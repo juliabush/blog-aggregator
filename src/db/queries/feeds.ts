@@ -16,3 +16,8 @@ export async function printFeed(Feed: Feed, User: User) {
   console.log(Feed);
   console.log(User);
 }
+
+export async function getFeeds() {
+  const result = await db.select().from(feeds);
+  return result;
+}
