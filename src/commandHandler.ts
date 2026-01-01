@@ -1,5 +1,10 @@
 import { setUser } from "./config";
-import { createUser, fetchUser, deleteAllUsers } from "./db/queries/users";
+import {
+  createUser,
+  fetchUser,
+  deleteAllUsers,
+  getUsers,
+} from "./db/queries/users";
 
 export type CommandHandler = (
   cmdName: string,
@@ -39,6 +44,16 @@ export async function handlerRegisterUser(cmdName: string, ...args: string[]) {
 export async function handlerReset(cmdName: string) {
   try {
     await deleteAllUsers();
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
+
+export async function handlerUsers(cmdName: string) {
+  try {
+    await getUsers();
     process.exit(0);
   } catch (error) {
     console.log(error);
