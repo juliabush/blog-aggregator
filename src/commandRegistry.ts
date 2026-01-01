@@ -3,15 +3,15 @@ import { CommandHandler } from "./commandHandler";
 export type CommandsRegistry = Record<string, CommandHandler>;
 // mapping names to functions, key is command name, value is handler
 
-export function registerCommand(
+export async function registerCommand(
   registry: CommandsRegistry,
   cmdName: string,
   handler: CommandHandler
-): void {
+): Promise<void> {
   registry[cmdName] = handler;
 }
 
-export function runCommand(
+export async function runCommand(
   registry: CommandsRegistry,
   cmdName: string,
   ...args: string[]

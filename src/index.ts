@@ -5,7 +5,7 @@ import { runCommand } from "./commandRegistry";
 
 import { exit } from "node:process";
 
-function main() {
+async function main() {
   setUser("Julia");
   const registry: CommandsRegistry = {
     login: handlerLogin,
@@ -17,7 +17,8 @@ function main() {
   }
   const cmdName = sliced_cli[0];
   const argArray = sliced_cli.slice(1);
-  runCommand(registry, cmdName, ...argArray);
+  await runCommand(registry, cmdName, ...argArray);
+  process.exit(0);
 }
 
 main();
