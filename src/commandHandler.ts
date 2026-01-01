@@ -1,4 +1,4 @@
-import { setUser } from "./config";
+import { setUser, readConfig } from "./config";
 import {
   createUser,
   fetchUser,
@@ -53,7 +53,15 @@ export async function handlerReset(cmdName: string) {
 
 export async function handlerUsers(cmdName: string) {
   try {
-    await getUsers();
+    const all_users = await getUsers();
+    for (const user of all_users) {
+      const cfg = readConfig();
+      if (user.name === (await cfg.currentUserName)) {
+        console.log(`* ${user.name} (current)`);
+      } else {
+        console.log(`* ${user.name}`);
+      }
+    }
     process.exit(0);
   } catch (error) {
     console.log(error);
