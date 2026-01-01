@@ -7,15 +7,17 @@ export type CommandHandler = (
 ) => Promise<void>;
 
 export async function handlerLogin(cmdName: string, ...args: string[]) {
-  if (args.length === 0) {
-    throw new Error("Commands array is empty");
-  }
-  const username = args[0];
-  let checkUsername = await fetchUser(username);
-  if (!checkUsername) {
+  if (args.length !== 1) {
     throw new Error(`usage: ${cmdName} <name>`);
   }
-  setUser(username);
+
+  const username = args[0];
+  const user = await fetchUser(username);
+  if (!user) {
+    throw new Error("Cannot login with nonexistant account");
+  }
+
+  setUser(user.name);
   console.log("User has been set");
 }
 
