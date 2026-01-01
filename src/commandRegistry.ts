@@ -21,5 +21,5 @@ export async function runCommand(
     throw new Error(`Command "${cmdName}" does not exist`);
   }
 
-  handler(cmdName, ...args);
+  await handler(cmdName, ...args);
 }
