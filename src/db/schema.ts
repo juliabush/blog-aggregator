@@ -1,8 +1,14 @@
-import { pgTable, timestamp, uuid, text } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  timestamp,
+  uuid,
+  text,
+  foreignKey,
+} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
-  createdAt: timestamp("create_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
     .defaultNow()
@@ -10,14 +16,26 @@ export const users = pgTable("users", {
   name: text("name").notNull().unique(),
 });
 
-export const feeds = pgTable("feeds", {
-  id: uuid("id").primaryKey().defaultRandom().notNull(),
-  createdAt: timestamp("created_at").notNull().defaultNow(),
-  updatedAt: timestamp("update_at")
-    .notNull()
-    .defaultNow()
-    .$onUpdate(() => new Date()),
-  name: text("title").notNull().unique(),
-  url: text("url").unique(),
-  user_id: text("user_id").notNull(),
-});
+export const feeds = pgTable(
+  "feeds",
+  {
+    id: uuid("id").primaryKey().defaultRandom().notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at")
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+    name: text("name").notNull(),
+    url: text("url").unique(),
+    user_id: uuid("user_id").notNull(),
+  },
+  (table) => {
+    return {
+      userFk: foreignKey({
+        columns: [table.user_id],
+        foreignColumns: [users.id],
+        // onDelete: "cascade"
+      }),
+    };
+  }
+);
