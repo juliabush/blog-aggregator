@@ -12,6 +12,7 @@ import {
 } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
+import { middlewareLoggedIn } from "./middleware";
 
 // import { exit } from "node:process";
 
@@ -22,10 +23,10 @@ async function main() {
     reset: handlerReset,
     users: handlerUsers,
     agg: handlerAgg,
-    addfeed: addfeed,
+    addfeed: middlewareLoggedIn(addfeed),
     feeds: fetchFeeds,
-    follow: newFeedFollow,
-    following: currentlyFollowing,
+    follow: middlewareLoggedIn(newFeedFollow),
+    following: middlewareLoggedIn(currentlyFollowing),
   };
 
   const sliced_cli = process.argv.slice(2);
