@@ -40,9 +40,13 @@ export async function getFeedFollowsForUser(user_id: string) {
 }
 
 export async function deleteFeedFollow(user_id: string, url: string) {
+  const [feed] = await db.select().from(feeds).where(eq(feeds.url, url));
+  if (!feed) {
+    throw new Error(`Feed with URL ${url} not found`);
+  }
   const [result] = await db
     .delete(feed_follow)
     .where(
-      and(eq(feed_follow.user_id, user_id), eq(feed_follow.feed_id, feeds.id))
+      and(eq(feed_follow.user_id, user_id), eq(feed_follow.feed_id, feed.id))
     );
 }
