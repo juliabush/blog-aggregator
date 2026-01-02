@@ -14,6 +14,8 @@ import {
   getFeedFollowsForUser,
 } from "./db/queries/feed_follow";
 
+import type { User } from "./db/queries/users";
+
 export type CommandHandler = (
   cmdName: string,
   ...args: string[]
@@ -77,26 +79,19 @@ export async function handlerUsers(cmdName: string) {
   }
 }
 
-// export async function handlerAgg(cmdName: string, ...args: string[]) {
-//   const feed = await fetchFeed(args[0]);
-//   console.log(feed);
-// }
 export async function handlerAgg(cmdName: string) {
   const feed = await fetchFeed("https://www.wagslane.dev/index.xml");
-  // console.log(feed);
   console.log(JSON.stringify(feed, null, 2));
 }
 
-export async function addfeed(cmdName: string, ...args: string[]) {
+export async function addfeed(cmdName: string, user: User, ...args: string[]) {
   if (args.length < 2) {
     process.exit(1);
   }
   try {
-    const cfg = readConfig();
-    const user_id = await fetchUser(cfg.currentUserName);
-    const feed = await createFeed(args[0], args[1], user_id.id);
-    const feed_follow = await createFeedFollow(user_id.id, feed.id);
-    console.log(`Feed: ${feed.name}, Followed by: ${user_id.name}`);
+    const feed = await createFeed(args[0], args[1], user.id);
+    const feed_follow = await createFeedFollow(user.id, feed.id);
+    console.log(`Feed: ${feed.name}, Followed by: ${user.name}`);
     process.exit(0);
   } catch (error) {
     console.log(`${error}`);
@@ -118,23 +113,28 @@ export async function fetchFeeds(cmdName: string) {
   }
 }
 
-export async function newFeedFollow(cmdName: string, ...args: string[]) {
+export async function newFeedFollow(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
   if (args.length === 0) {
     console.log("Must provide a url as argument");
     process.exit(1);
   }
   const result = await getFeedByUrl(args[0]);
-  const cfg = readConfig();
-  const user_id = await fetchUser(cfg.currentUserName);
-  const createFeed = await createFeedFollow(user_id.id, result.id);
+  const createFeed = await createFeedFollow(user.id, result.id);
+
   console.log(
     `Feed: ${createFeed.feedName}, Followed by: ${createFeed.userName}`
   );
 }
 
-export async function currentlyFollowing(cmdName: string, ...args: string[]) {
-  const cfg = readConfig();
-  const user = await fetchUser(cfg.currentUserName);
+export async function currentlyFollowing(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
   const follows = await getFeedFollowsForUser(user.id);
 
   for (const follow of follows) {
