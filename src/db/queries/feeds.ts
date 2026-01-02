@@ -2,6 +2,7 @@ import { db } from "..";
 import { feeds } from "../schema";
 import type { User } from "../queries/users";
 import { eq, sql } from "drizzle-orm";
+import { fetchFeed } from "../../fetchFeed";
 
 export async function createFeed(name: string, url: string, user_id: string) {
   const [result] = await db
@@ -45,4 +46,29 @@ export async function getNextFeedToFetch() {
   }
 
   return nextFeed;
+}
+
+export async function scrapeFeeds() {
+  const next_feed = await getNextFeedToFetch();
+  if (!next_feed) {
+    console.log("No feeds avaliable to scrape.");
+    return;
+  }
+  await markFeedFetched(next_feed.id);
+
+  let fetched_feed;
+  if (next_feed.url === null) {
+    console.error("cannot fetch feed with null value");
+  } else {
+    fetched_feed = await fetchFeed(next_feed.url);
+  }
+  if (fetched_feed === undefined) {
+    console.error("Cannot loop through undefined fetched_feed");
+  } else {
+    for (const item of fetched_feed.channel.item) {
+      console.log(`- ${item.title}`);
+    }
+  }
+
+  console.log(`Finished fetching: ${next_feed.name}`);
 }
