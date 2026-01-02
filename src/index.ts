@@ -8,6 +8,7 @@ import {
   addfeed,
   fetchFeeds,
   newFeedFollow,
+  currentlyFollowing,
 } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
@@ -24,6 +25,7 @@ async function main() {
     addfeed: addfeed,
     feeds: fetchFeeds,
     follow: newFeedFollow,
+    following: currentlyFollowing,
   };
 
   const sliced_cli = process.argv.slice(2);
