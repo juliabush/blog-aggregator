@@ -6,7 +6,7 @@ import {
   getUsers,
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
-import { createFeed } from "./db/queries/feeds";
+import { createFeed, getFeeds, printFeed } from "./db/queries/feeds";
 
 export type CommandHandler = (
   cmdName: string,
@@ -93,5 +93,19 @@ export async function addfeed(cmdName: string, ...args: string[]) {
   } catch (error) {
     console.log(`${error}`);
     process.exit(1);
+  }
+}
+
+export async function fetchFeeds(cmdName: string) {
+  const all_feeds = await getFeeds();
+  if (!all_feeds) {
+    console.log("No feeds found");
+  }
+  for (const feed of all_feeds) {
+    const user = await fetchUser(feed.user_id);
+    if (!user) {
+      console.log("No user found");
+    }
+    printFeed(feed, user);
   }
 }
