@@ -1,5 +1,6 @@
 import { db } from "..";
 import { users } from "../schema";
+import { feeds } from "../schema";
 import { eq } from "drizzle-orm";
 
 export type User = typeof users.$inferSelect;
@@ -15,7 +16,8 @@ export async function fetchUser(name: string) {
 }
 
 export async function deleteAllUsers() {
-  const [result] = await db.delete(users);
+  const delete_users = await db.delete(users);
+  const delete_feeds = await db.delete(feeds);
 }
 
 export async function getUsers() {
