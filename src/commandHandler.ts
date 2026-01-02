@@ -8,7 +8,11 @@ import {
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
 import { createFeed, getFeeds, printFeed } from "./db/queries/feeds";
-import { getFeedByUrl, createFeedFollow } from "./db/queries/feed_follow";
+import {
+  getFeedByUrl,
+  createFeedFollow,
+  getFeedFollowsForUser,
+} from "./db/queries/feed_follow";
 
 export type CommandHandler = (
   cmdName: string,
@@ -91,6 +95,7 @@ export async function addfeed(cmdName: string, ...args: string[]) {
     const cfg = readConfig();
     const user_id = await fetchUser(cfg.currentUserName);
     const feed = await createFeed(args[0], args[1], user_id.id);
+    const feed_follow = await createFeedFollow(user_id.id, feed.id);
     process.exit(0);
   } catch (error) {
     console.log(`${error}`);
@@ -126,4 +131,14 @@ export async function newFeedFollow(cmdName: string, ...args: string[]) {
   );
 }
 
-export async function currentlyFollowing(cmdName: string, ...args: string[]) {}
+export async function currentlyFollowing(cmdName: string, ...args: string[]) {
+  const cfg = readConfig();
+  const user = await fetchUser(cfg.currentUserName);
+  const follows = await getFeedFollowsForUser(user.id);
+
+  for (const follow of follows) {
+    console.log(`- ${follow.feedName}`);
+  }
+
+  process.exit(0);
+}
