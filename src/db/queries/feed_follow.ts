@@ -24,4 +24,17 @@ export async function getFeedByUrl(url: string) {
   return result;
 }
 
-export async function getFeedFollowersForUser() {}
+export async function getFeedFollowsForUser(user_id: string) {
+  const result = await db
+    .select({
+      id: feed_follow.id,
+      feedName: feeds.name,
+      userName: users.name,
+    })
+    .from(feed_follow)
+    .innerJoin(feeds, eq(feed_follow.feed_id, feeds.id))
+    .innerJoin(users, eq(feed_follow.user_id, users.id))
+    .where(eq(feed_follow.user_id, user_id));
+
+  return result;
+}
