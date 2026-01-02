@@ -4,6 +4,7 @@ import {
   fetchUser,
   deleteAllUsers,
   getUsers,
+  getUserById,
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
 import { createFeed, getFeeds, printFeed } from "./db/queries/feeds";
@@ -98,13 +99,13 @@ export async function addfeed(cmdName: string, ...args: string[]) {
 
 export async function fetchFeeds(cmdName: string) {
   const all_feeds = await getFeeds();
-  if (!all_feeds) {
+  if (all_feeds.length === 0) {
     console.log("No feeds found");
   }
   for (const feed of all_feeds) {
-    const user = await fetchUser(feed.user_id);
+    const user = await getUserById(feed.user_id);
     if (!user) {
-      console.log("No user found");
+      throw new Error(`Failed to find user for feed ${feed.id}`);
     }
     printFeed(feed, user);
   }
