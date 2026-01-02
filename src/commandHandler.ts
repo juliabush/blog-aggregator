@@ -96,6 +96,7 @@ export async function addfeed(cmdName: string, ...args: string[]) {
     const user_id = await fetchUser(cfg.currentUserName);
     const feed = await createFeed(args[0], args[1], user_id.id);
     const feed_follow = await createFeedFollow(user_id.id, feed.id);
+    console.log(`Feed: ${feed.name}, Followed by: ${user_id.name}`);
     process.exit(0);
   } catch (error) {
     console.log(`${error}`);
