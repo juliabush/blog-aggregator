@@ -16,8 +16,8 @@ export async function fetchUser(name: string) {
 }
 
 export async function deleteAllUsers() {
-  const delete_users = await db.delete(users);
-  const delete_feeds = await db.delete(feeds);
+  const delete_users = await db.delete(feeds);
+  const delete_feeds = await db.delete(users);
 }
 
 export async function getUsers() {
