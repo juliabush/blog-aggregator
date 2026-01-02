@@ -29,6 +29,7 @@ export const feeds = pgTable(
     name: text("name").notNull(),
     url: text("url").unique(),
     user_id: uuid("user_id").notNull(),
+    last_fetched_at: timestamp("last_fetched_at"),
   },
   (table) => {
     return {

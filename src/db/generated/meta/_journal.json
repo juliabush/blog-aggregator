@@ -15,6 +15,13 @@
       "when": 1767357445669,
       "tag": "0001_elite_wong",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1767386236082,
+      "tag": "0002_solid_wolfpack",
+      "breakpoints": true
     }
   ]
 }
