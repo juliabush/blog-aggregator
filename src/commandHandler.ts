@@ -12,6 +12,7 @@ import {
   getFeedByUrl,
   createFeedFollow,
   getFeedFollowsForUser,
+  deleteFeedFollow,
 } from "./db/queries/feed_follow";
 
 import type { User } from "./db/queries/users";
@@ -142,4 +143,23 @@ export async function currentlyFollowing(
   }
 
   process.exit(0);
+}
+
+export async function handlerDelete(
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) {
+  if (args.length === 0) {
+    console.log(`Usage: ${cmdName} <feed-url>`);
+    process.exit(1);
+  }
+  try {
+    const message = await deleteFeedFollow(user.id, args[0]);
+    console.log(message);
+    process.exit(0);
+  } catch (error) {
+    console.error(`failed to delete feed follow: ${error}`);
+    process.exit(1);
+  }
 }
