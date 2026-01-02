@@ -7,7 +7,12 @@ import {
   getUserById,
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
-import { createFeed, getFeeds, printFeed } from "./db/queries/feeds";
+import {
+  createFeed,
+  getFeeds,
+  printFeed,
+  scrapeFeeds,
+} from "./db/queries/feeds";
 import {
   getFeedByUrl,
   createFeedFollow,
@@ -80,9 +85,29 @@ export async function handlerUsers(cmdName: string) {
   }
 }
 
-export async function handlerAgg(cmdName: string) {
-  const feed = await fetchFeed("https://www.wagslane.dev/index.xml");
-  console.log(JSON.stringify(feed, null, 2));
+export async function handlerAgg(cmdName: string, ...args: string[]) {
+  if (args.length !== 1) {
+    throw new Error(`Usage: ${cmdName} <time_between_reqs`);
+  }
+
+  const durationStr = args[0];
+  const timeBetweenRequests = parseDuration(durationStr);
+
+  console.log(`Collecting feeds every ${durationStr}...`);
+
+  scrapeFeeds().catch((err) => console.error("Initial scrape error:", err));
+
+  const interval = setInterval(() => {
+    scrapeFeeds().catch((err) => console.error("Scrape error:", err));
+  }, timeBetweenRequests);
+
+  await new Promise<void>((resolve) => {
+    process.on("SIGINT", () => {
+      console.log("\nShutting down feed aggregator...");
+      clearInterval(interval);
+      resolve();
+    });
+  });
 }
 
 export async function addfeed(cmdName: string, user: User, ...args: string[]) {
