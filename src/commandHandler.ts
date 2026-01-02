@@ -8,6 +8,7 @@ import {
 } from "./db/queries/users";
 import { fetchFeed } from "./fetchFeed";
 import { createFeed, getFeeds, printFeed } from "./db/queries/feeds";
+import { getFeedByUrl, createFeedFollow } from "./db/queries/feed_follow";
 
 export type CommandHandler = (
   cmdName: string,
@@ -110,3 +111,19 @@ export async function fetchFeeds(cmdName: string) {
     printFeed(feed, user);
   }
 }
+
+export async function newFeedFollow(cmdName: string, ...args: string[]) {
+  if (args.length === 0) {
+    console.log("Must provide a url as argument");
+    process.exit(1);
+  }
+  const result = await getFeedByUrl(args[0]);
+  const cfg = readConfig();
+  const user_id = await fetchUser(cfg.currentUserName);
+  const createFeed = await createFeedFollow(user_id.id, result.id);
+  console.log(
+    `Feed: ${createFeed.feedName}, Followed by: ${createFeed.userName}`
+  );
+}
+
+export async function currentlyFollowing(cmdName: string, ...args: string[]) {}
