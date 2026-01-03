@@ -219,13 +219,12 @@ function parseDuration(durationStr: string): number {
 export async function handlerBrowse(
   cmdName: string,
   user: User,
-  ...args: number[]
+  ...args: string[]
 ) {
-  if (args.length === 0) {
-    args[0] = 2;
-  }
+  const limit = args.length === 0 ? 2 : Number(args[0] || 2);
+
   const latest_posts = await getPostsForUser(user.id);
-  for (let i = 0; i <= args[0]; i++) {
-    for (const post in latest_posts) console.log(post);
+  for (const post of latest_posts.slice(0, limit)) {
+    console.log(post);
   }
 }

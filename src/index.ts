@@ -10,6 +10,7 @@ import {
   newFeedFollow,
   currentlyFollowing,
   handlerDelete,
+  handlerBrowse,
 } from "./commandHandler";
 import type { CommandsRegistry } from "./commandRegistry";
 import { runCommand } from "./commandRegistry";
@@ -29,6 +30,7 @@ async function main() {
     follow: middlewareLoggedIn(newFeedFollow),
     following: middlewareLoggedIn(currentlyFollowing),
     unfollow: middlewareLoggedIn(handlerDelete),
+    browse: middlewareLoggedIn(handlerBrowse),
   };
 
   const sliced_cli = process.argv.slice(2);
