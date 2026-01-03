@@ -2,7 +2,7 @@ import { db } from "..";
 import { posts } from "../schema";
 import { feeds } from "../schema";
 import { users } from "../schema";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export async function createPost(
   title: string,
@@ -32,6 +32,7 @@ export async function getPostsForUser(user_id: string) {
     .from(feeds)
     .innerJoin(posts, eq(posts.feed_id, feeds.id))
     .innerJoin(users, eq(feeds.user_id, users.id))
-    .where(eq(feeds.user_id, user_id));
+    .where(eq(feeds.user_id, user_id))
+    .orderBy(desc(posts.published_at));
   return joinedResult[0];
 }
