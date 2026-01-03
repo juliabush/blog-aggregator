@@ -28,6 +28,10 @@ export async function getPostsForUser(user_id: string) {
     .select({
       feedName: feeds.user_id,
       userName: users.name,
+      title: posts.title,
+      url: posts.url,
+      description: posts.description,
+      publishedAt: posts.published_at,
     })
     .from(feeds)
     .innerJoin(posts, eq(posts.feed_id, feeds.id))
