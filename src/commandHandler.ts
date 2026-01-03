@@ -20,6 +20,8 @@ import {
   deleteFeedFollow,
 } from "./db/queries/feed_follow";
 
+import { getPostsForUser } from "./db/queries/posts";
+
 import type { User } from "./db/queries/users";
 
 export type CommandHandler = (
@@ -96,7 +98,7 @@ export async function handlerAgg(cmdName: string, ...args: string[]) {
   console.log(`Collecting feeds every ${durationStr}...`);
 
   scrapeFeeds().catch((err) => console.error("Initial scrape error:", err));
-
+  // im assuming i need to call createPost here
   const interval = setInterval(() => {
     scrapeFeeds().catch((err) => console.error("Scrape error:", err));
   }, timeBetweenRequests);
@@ -211,5 +213,19 @@ function parseDuration(durationStr: string): number {
       return value * 60 * 60 * 1000;
     default:
       throw new Error("Unsupported time unit.");
+  }
+}
+
+export async function handlerBrowse(
+  cmdName: string,
+  user: User,
+  ...args: number[]
+) {
+  if (args.length === 0) {
+    args[0] = 2;
+  }
+  const latest_posts = await getPostsForUser(user.id);
+  for (let i = 0; i <= args[0]; i++) {
+    for (const post in latest_posts) console.log(post);
   }
 }
