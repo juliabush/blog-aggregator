@@ -98,7 +98,6 @@ export async function handlerAgg(cmdName: string, ...args: string[]) {
   console.log(`Collecting feeds every ${durationStr}...`);
 
   scrapeFeeds().catch((err) => console.error("Initial scrape error:", err));
-  // im assuming i need to call createPost here
   const interval = setInterval(() => {
     scrapeFeeds().catch((err) => console.error("Scrape error:", err));
   }, timeBetweenRequests);
@@ -225,6 +224,7 @@ export async function handlerBrowse(
 
   const latest_posts = await getPostsForUser(user.id);
   for (const post of latest_posts.slice(0, limit)) {
-    console.log(post);
+    console.log(post.title);
+    console.log(post.description);
   }
 }
