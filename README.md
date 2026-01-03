@@ -16,15 +16,15 @@ A multi-user blog aggregator that collects and displays posts from RSS feeds in 
 - `unfollow` — Unfollow a feed (must be logged in).
 - `browse` — Browse the latest posts from the feeds you follow (must be logged in).
 
-<!-- this is the format for writitng a code block in markdown -->
-<!-- specifying the language on the same line results in syntax highlighting -->
+<!-- this is the format for writitng a code block in markdown
+specifying the language on the same line results in syntax highlighting
 
 ```js
 console.alert("Hello");
 ```
 
-<!-- what is the language to add to this for synatx highlighting -->
-<!-- or is that not necessary -->
+what is the language to add to this for synatx highlighting
+or is that not necessary -->
 
 ```bash
 npm run start login <username>
