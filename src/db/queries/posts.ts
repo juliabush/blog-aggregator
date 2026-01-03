@@ -34,5 +34,5 @@ export async function getPostsForUser(user_id: string) {
     .innerJoin(users, eq(feeds.user_id, users.id))
     .where(eq(feeds.user_id, user_id))
     .orderBy(desc(posts.published_at));
-  return joinedResult[0];
+  return joinedResult;
 }
