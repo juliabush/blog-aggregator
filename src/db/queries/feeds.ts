@@ -3,6 +3,7 @@ import { feeds } from "../schema";
 import type { User } from "../queries/users";
 import { eq, sql } from "drizzle-orm";
 import { fetchFeed } from "../../fetchFeed";
+import { createPost } from "./posts";
 
 export async function createFeed(name: string, url: string, user_id: string) {
   const [result] = await db
@@ -66,7 +67,21 @@ export async function scrapeFeeds() {
     console.error("Cannot loop through undefined fetched_feed");
   } else {
     for (const item of fetched_feed.channel.item) {
-      console.log(`- ${item.title}`);
+      const publishedAt = new Date(item.pubDate || Date.now());
+
+      try {
+        await createPost(
+          item.title ?? "Untitled",
+          item.link ?? "",
+          item.description ?? "",
+          next_feed.id
+        );
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message?.includes("duplicate key")) {
+          continue;
+        }
+        console.error("Error saving post:", err);
+      }
     }
   }
 
