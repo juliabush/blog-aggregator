@@ -68,3 +68,28 @@ export const feed_follow = pgTable(
     };
   }
 );
+
+export const posts = pgTable(
+  "posts",
+  {
+    id: uuid("id").primaryKey().defaultRandom().notNull(),
+    created_at: timestamp("created_at").notNull().defaultNow(),
+    updated_at: timestamp("updated_at")
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+    title: text("title").notNull(),
+    url: text("url").unique().notNull(),
+    description: text("description").unique().notNull(),
+    published_at: timestamp("published_at"),
+    feed_id: uuid("feed_id").notNull(),
+  },
+  (table) => {
+    return {
+      feedFK: foreignKey({
+        columns: [table.feed_id],
+        foreignColumns: [feeds.id],
+      }),
+    };
+  }
+);
