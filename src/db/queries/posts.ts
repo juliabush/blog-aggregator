@@ -1,5 +1,8 @@
 import { db } from "..";
 import { posts } from "../schema";
+import { feeds } from "../schema";
+import { users } from "../schema";
+import { eq } from "drizzle-orm";
 
 export async function createPost(
   title: string,
@@ -17,4 +20,18 @@ export async function createPost(
     })
     .returning();
   return result;
+}
+
+export async function getPostsForUser(user_id: string) {
+  const all_posts = await db.select().from(posts);
+  const joinedResult = await db
+    .select({
+      feedName: feeds.user_id,
+      userName: users.name,
+    })
+    .from(feeds)
+    .innerJoin(posts, eq(posts.feed_id, feeds.id))
+    .innerJoin(users, eq(feeds.user_id, users.id))
+    .where(eq(feeds.user_id, user_id));
+  return joinedResult[0];
 }
