@@ -8,7 +8,7 @@ export async function createPost(
   title: string,
   url: string,
   description: string,
-  feed_id: string
+  feed_id: string,
 ) {
   const [result] = await db
     .insert(posts)
@@ -18,7 +18,9 @@ export async function createPost(
       description: description,
       feed_id: feed_id,
     })
+    .onConflictDoNothing({ target: posts.url })
     .returning();
+
   return result;
 }
 
